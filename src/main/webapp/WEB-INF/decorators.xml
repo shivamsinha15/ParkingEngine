@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators>
+	<!-- Any urls that are excluded will never be decorated by Sitemesh -->
+	<excludes>
+		<pattern>/about.jsp</pattern>
+	</excludes>
+
+	<decorator name="main-layout" page="/WEB-INF/decorators/main-layout.jsp">
+		<pattern>*/showcase/*</pattern>
+	</decorator>
+
+	<decorator name="main-layoutPE" page="/parkingEngine/WEB-INF/decorators/main-layout.jsp">
+		<pattern>/*</pattern>
+	</decorator> 
+</decorators>

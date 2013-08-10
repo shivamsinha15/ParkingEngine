@@ -1,0 +1,139 @@
+Files to Know:
+webapp/web-inf/
+
+web.xml
+________________
+1.controllers.xml defines the overall page mapping route requests
+
+2.contextConfigLocation, which is used to specify the location of the applicationContext configuration.
+Note there are two distinct types of spring container beanfactory and applicationcontext which manage the lifecycles of your objects,
+
+3.ContextLoaderListener (if contextConfigLocations not specified, contextLoaderListener will default to /WEB-INF/applicationContext.xml).
+Hence this actually creates the WebApplicationContext from the applicationContext file.
+If there are multiple contextConfigLocations then will implement/instaniate multiple containers.
+
+4.Dispatcher Servlet, which is a frontcontroller that dispatches web requests to your application logic.
+By default looks at [servlet-name]-servlet.xml in the WEB-INF directory of your web application and create the beans defined there .
+And also by default handles all requests mapped to "/".
+
+5.Filter, Applies filters before processing the request. Filter used is com.opensymphony.sitemesh.webapp.SiteMeshFilter.
+This decorators all page requests with the decorators specified in WEB-INF/decorators.xml
+
+
+General Notes about web.xml. There are two in this example containers:
+> one root context /WEB-INF/spring/root-context.xml to host shared resources required by servlets and filters
+> two web context /WEB-INF/spring/appServlet/servlet-context.xml to host local application components delegated to by the DispatcherServlet.
+
+servlet-context.xml
+----------------
+Defines the request processing infrastructure required for the dispatcher servlet:
+1. Enables the Spring MVC @Controller programming model
+2. Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory
+3. Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory
+4. Imports user-defined @Controller beans that process client requests
+
+URL Path Name:
+http://localhost:8080/parking-engine/ <-Defined as artifact name.
+
+3. Note all static resource requests must be mapped 
+E.g. webapp/parkingEngine/
+resources/ ( Contains js, css etc )
+WEB-INF/decorators/ (mainlayout):
+<link href="./sharedResources/css/bootstrap.min.css" rel="stylesheet">
+
+The HTTP GET handler of this static resource request is contained in servlet-context.xml
+		<!-- Custom to ParkingEngine-->
+	<resources mapping="/sharedResources/**" location="/parkingEngine/resources/" /
+	
+Logging.xml
+Note for changing log settings src/main/webapp/WEB-INF/classes/log4j.xml
+______________________________________________________________________________________________________________________________
+Sticking Points
+root-context.xml (is the application context) which is a shared resource.
+Hence the servlet-context will have access to the root-context but not vice versa.
+
+______________________________________________________________________________________________________________________________
+
+To Do:
+1. Add existing Parking engine Code & springify it.
+	1.1 Can you have view resolves view resolves views for different locations.
+	Although you can have multiple resolvers. It wasnt required. 
+	Just changed the InteralResourceViewResolver prefix from "/WEB-INF/views/" to "".
+	Hence in the controller.xml have to explicitly specify which view you have a request to resolve to.
+	
+	1.2 Can you Have multiple filters which decorate views depending on requests
+	You could define the location of the decorator.xml, by creating a custom sitemesh.xml.
+	However couldnt figure out a way to map the filters defined in web.xml such that one maps to the default location
+	& the other filter looks at the custome location define in sitemesh.xml
+	
+	As an alternative solution. Removing the defaultdir="/WEB-INF/decorator" from <decorators defaultdir="/WEB-INF/decorator" >
+	And using the explicit location name and pattern matching you are able to distingush between which decorator you want to use.
+	
+	Changes: 
+	Decorator.xml
+	1. <decorators defaultdir="/WEB-INF/decorator" > to <decorators>
+	2. <decorator name="main-layout" page="main-layout.jsp"> to <decorator name="main-layout" page="/WEB-INF/decorators/main-layout.jsp">
+	3. <pattern>/*</pattern> to <pattern>/showcase</pattern> 
+	
+	Controller.xml
+	4. Appended showcase/ to all the example views.
+	
+	
+	1.3 Jspfying your current site.
+-----------------------
+Removed this from the main-layout.jsp:
+Was causing this error:
+Flot pie chart gives error in firebug: “uncaught exception: Invalid dimensions for plot, width = null, height = null”
+
+
+
+<script src="./sharedResources/js/plugins/flot/jquery.flot.js"></script>
+<script src="./sharedResources/js/plugins/flot/jquery.flot.pie.js"></script>
+<script src="./sharedResources/js/plugins/flot/jquery.flot.resize.js"></script>
+
+<script src="./sharedResources/js/Application.js"></script>
+
+<script src="./sharedResources/js/charts/area.js"></script>
+<script src="./sharedResources/js/charts/donut.js"></script>
+-------------------------------
+Hibernate:
+<properties>
+<hibernate.version>3.3.0.GA</hibernate.version>
+<hibernate.entitymanager.version>3.4.0.GA</hibernate.entitymanager.version>
+</properties>
+
+
+<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.entitymanager.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+<!--joda time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time-hibernate</artifactId>
+			<version>1.3</version>
+		</dependency>
+
+<!-- TIMEPICKER -->
+   ®®®
+ <script type="text/javascript" src="./plugin/bootstrap-timepicker/js/bootstrap-timepicker.min.js"/></script> 
+
+
+
+
+
+
