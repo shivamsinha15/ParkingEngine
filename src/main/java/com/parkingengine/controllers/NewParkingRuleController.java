@@ -1,26 +1,24 @@
 package com.parkingengine.controllers;
 
 import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.LocalTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkingengine.domain.entities.PERule;
 import com.parkingengine.domain.entities.PERule.DaysOfTheWeek;
-import com.parkingengine.persistance.PERuleDAO;
+import com.parkingengine.service.PERuleService;
 
 @Controller
 public class NewParkingRuleController {
 
-	@Autowired
-	PERuleDAO peRuleDAOImpl;
+	@Inject
+	PERuleService peRuleServiceImpl;
 	@Resource
 	private PlatformTransactionManager txManager;
 
@@ -59,8 +57,7 @@ public class NewParkingRuleController {
 				PERule.hoursMinFormatter));
 		peRule.setToDay(DaysOfTheWeek.valueOf(request.getParameter(TO_DAY)));
 		peRule.setFromDay(DaysOfTheWeek.valueOf(request.getParameter(FROM_DAY)));
-		save(peRule);
-		return true;
+		return peRuleServiceImpl.save(peRule);
 	}
 
     /*
@@ -80,12 +77,7 @@ public class NewParkingRuleController {
 	}
 	*/
 
- @Transactional(propagation = Propagation.REQUIRES_NEW)
-	    private void save(PERule peRule) {
 
-	            peRuleDAOImpl.persist(peRule);
-	 
-	    }
 
 	@RequestMapping("/test")
 	public @ResponseBody

@@ -17,6 +17,7 @@
 		<aspectj.version>1.6.11</aspectj.version>
 		<hibernate.entitymanager.version>4.0.0.Final</hibernate.entitymanager.version>
 		<cglib.nodep.version>2.2</cglib.nodep.version>
+		<atomikos.version>3.8.0</atomikos.version>
 	</properties>
 
 	<dependencies>
@@ -30,11 +31,19 @@
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>8.0.1.v20110908</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
 			<version>8.0.1.v20110908</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.toolchain</groupId>
+			<artifactId>jetty-test-helper</artifactId>
+			<version>1.5</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -48,11 +57,7 @@
 			<version>6.0.20</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty.toolchain</groupId>
-			<artifactId>jetty-test-helper</artifactId>
-			<version>1.5</version>
-		</dependency>
+
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -285,21 +290,38 @@
 			<version>2.0.1</version>
 		</dependency>
 
+		<!-- JTA -->
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.1</version>
+		</dependency>
 		<!-- JTA JETTY JNDI -->
+		<!-- Atomikos -->
 		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-j2ee-connector_1.5_spec</artifactId>
-			<version>2.0.0</version>
+			<groupId>com.atomikos</groupId>
+			<artifactId>transactions</artifactId>
+			<version>${atomikos.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jms_1.1_spec</artifactId>
-			<version>1.1.1</version>
+			<groupId>com.atomikos</groupId>
+			<artifactId>transactions-jta</artifactId>
+			<version>${atomikos.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jta_1.0.1B_spec</artifactId>
-			<version>1.1.1</version>
+			<groupId>com.atomikos</groupId>
+			<artifactId>transactions-jdbc</artifactId>
+			<version>${atomikos.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.atomikos</groupId>
+			<artifactId>transactions-hibernate3</artifactId>
+			<version>${atomikos.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.atomikos</groupId>
+			<artifactId>atomikos-util</artifactId>
+			<version>${atomikos.version}</version>
 		</dependency>
 
 		<!-- Test -->

@@ -14,12 +14,12 @@
 	http://www.springframework.org/schema/mvc
 http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 	<aop:aspectj-autoproxy />
+	
+	<!--So you can use @Transactional -->
 	<tx:annotation-driven />
 	
-
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>
+	<!--Auto discovers transaction manage in default JNDI name Space -->
+	<tx:jta-transaction-manager />
 
 
 	<!-- Is used to activate annotations in beans already registered in the 
@@ -43,11 +43,8 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 		</property>
 	</bean>
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<!--property name="password" value="${jdbc.password}" / -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="jdbc/myds" />
 	</bean>
 
 
@@ -58,11 +55,32 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 		<property name="persistenceXmlLocation" value="/WEB-INF/spring/jpa-prod-persistence.xml" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="generateDdl" value="true" />
+				<property name="generateDdl" value="false" />
 				<property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
 			</bean>
 		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.format_sql">false
+				</prop>
+				<prop key="hibernate.use_sql_comments">false
+				</prop>
+				<prop key="hibernate.generate_statistics">false
+				</prop>
+				<prop key="hibernate.transaction.factory_class">org.hibernate.engine.transaction.internal.jta.CMTTransactionFactory
+				</prop>
+				<!-- The following line is what's used in Hibernate 4 instead of a TransactionManagerLookup 
+					class -->
+				<prop key="hibernate.transaction.manager_lookup_class">com.atomikos.icatch.jta.hibernate3.TransactionManagerLookup
+				</prop>
+
+			</props>
+		</property>
 	</bean>
+
+
+	<!-- Imports user-defined @Controller beans that process client requests -->
+	<beans:import resource="/appServlet/controllers.xml" />
 
 
 

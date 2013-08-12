@@ -1,0 +1,40 @@
+
+<!-- WebApplication Service ConfigFs -->
+<Configure id="Server" class="org.eclipse.jetty.webapp.WebAppContext">
+
+	<!-- Data Source do MySQL -->
+	<New id="jdbc/myds" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg>
+		</Arg>
+		<Arg>jdbc/myds</Arg>
+		<Arg>
+			<New class="com.atomikos.jdbc.AtomikosDataSourceBean">
+				<Set name="UniqueResourceName">econdate</Set>
+				<Set name="xaDataSourceClassName">com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</Set>
+				<Get name="xaProperties">
+					<Call name="setProperty">
+						<Arg>url</Arg>
+						<Arg>jdbc:mysql://localhost:3306/econdate</Arg>
+					</Call>
+					<Call name="setProperty">
+						<Arg>user</Arg>
+						<Arg>root</Arg>
+					</Call>
+				</Get>
+				<Set name="minPoolSize">5</Set>
+				<Set name="maxPoolSize">60</Set>
+			</New>
+		</Arg>
+	</New>
+
+
+
+	<New id="tx" class="org.eclipse.jetty.plus.jndi.Transaction">
+		<Arg>
+			<New class="com.atomikos.icatch.jta.UserTransactionImp" />
+		</Arg>
+	</New>
+
+
+
+</Configure>
