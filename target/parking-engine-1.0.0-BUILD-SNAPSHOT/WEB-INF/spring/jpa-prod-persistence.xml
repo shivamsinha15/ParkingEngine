@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence">    
-	<persistence-unit name="EconDatesDB" transaction-type="RESOURCE_LOCAL">
-		<class>com.parkingengine.domain.entities.PERule</class>
-		<class>com.parkingengine.domain.entities.PESpace</class>
-	</persistence-unit>
-</persistence>
