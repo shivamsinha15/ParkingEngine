@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence">    
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence">
 	<persistence-unit name="EconDatesDB" transaction-type="JTA">
-	<!-- Provedor de persistencia -->
+		<!-- Provedor de persistencia -->
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		
+
 		<!-- Data Source gerenciado pelo Application Service -->
-		<jta-data-source>jdbc/MySQL</jta-data-source>		
-		
+		<jta-data-source>jdbc/MySQL</jta-data-source>
+
 		<!-- Nao exclui classe nao listadas no persistence unit -->
-		<exclude-unlisted-classes>false</exclude-unlisted-classes>		
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<class>com.parkingengine.domain.entities.PERule</class>
 		<class>com.parkingengine.domain.entities.PESpace</class>
+
+
+		<properties>
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+		</properties>
+
 	</persistence-unit>
 </persistence>
 

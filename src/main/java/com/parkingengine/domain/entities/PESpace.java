@@ -1,5 +1,6 @@
 package com.parkingengine.domain.entities;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -20,123 +21,124 @@ import org.joda.time.LocalTime;
 @Table(name = PESpace.TABLE_NAME)
 public class PESpace {
 
-	public static final String TABLE_NAME = "pe_space";
+  public static final String TABLE_NAME = "pe_space";
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "pes_id")
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "pes_id")
+  private Long id;
 
-	@Column(name = "pes_start_lat")
-	private Long startLat;
+  @Column(name = "pes_start_lat", scale = 14, precision = 19)
+  @Type(type = "org.hibernate.type.BigDecimalType")
+  private BigDecimal startLat;
 
-	@Column(name = "pes_start_lng")
-	private Long startLng;
+  @Column(name = "pes_start_lng", scale = 14, precision = 19)
+  private BigDecimal startLng;
 
-	@Column(name = "pes_end_lat")
-	private Long endLat;
+  @Column(name = "pes_end_lat", scale = 14, precision = 19)
+  private BigDecimal endLat;
 
-	@Column(name = "pes_end_lng")
-	private Long endLng;
+  @Column(name = "pes_end_lng", scale = 14, precision = 19)
+  private BigDecimal endLng;
 
-	@Column(name = "pes_bearing")
-	private Long bearing;
+  @Column(name = "pes_bearing", scale = 14, precision = 19)
+  private BigDecimal bearing;
 
-	@Column(name = "pes_address")
-	private String address;
+  @Column(name = "pes_address")
+  private String address;
 
-	@Column(name = "pes_occupied")
-	private boolean occupied;
+  @Column(name = "pes_occupied")
+  private boolean occupied;
 
-	@Column(name = "pes_occupied_time")
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
-	private LocalTime occupiedTime;
+  @Column(name = "pes_occupied_time")
+  @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
+  private LocalTime occupiedTime;
 
-	// I believe this automatically adds the joining table
-	@ManyToMany(targetEntity = com.parkingengine.domain.entities.PERule.class, fetch = FetchType.EAGER)
-	@JoinTable(name = "pe_space_rule", joinColumns = @JoinColumn(name = "pes_id"), inverseJoinColumns = @JoinColumn(name = "per_id"))
-	private Collection<PERule> parkingEngineRules;
-	
-	public Long getId() {
-		return id;
-	}
+  // I believe this automatically adds the joining table
+  @ManyToMany(targetEntity = com.parkingengine.domain.entities.PERule.class, fetch = FetchType.EAGER)
+  @JoinTable(name = "pe_space_rule", joinColumns = @JoinColumn(name = "pes_id"), inverseJoinColumns = @JoinColumn(name = "per_id"))
+  private Collection<PERule> parkingEngineRules;
 
-	public Collection<PERule> getParkingEngineRules() {
-		return parkingEngineRules;
-	}
+  public Long getId() {
+    return id;
+  }
 
-	public void setParkingEngineRules(Collection<PERule> parkingEngineRules) {
-		this.parkingEngineRules = parkingEngineRules;
-	}
+  public Collection<PERule> getParkingEngineRules() {
+    return parkingEngineRules;
+  }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+  public void setParkingEngineRules(Collection<PERule> parkingEngineRules) {
+    this.parkingEngineRules = parkingEngineRules;
+  }
 
-	public Long getStartLat() {
-		return startLat;
-	}
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	public void setStartLat(Long startLat) {
-		this.startLat = startLat;
-	}
+  public BigDecimal getStartLat() {
+    return startLat;
+  }
 
-	public Long getStartLng() {
-		return startLng;
-	}
+  public void setStartLat(BigDecimal startLat) {
+    this.startLat = startLat;
+  }
 
-	public void setStartLng(Long startLng) {
-		this.startLng = startLng;
-	}
+  public BigDecimal getStartLng() {
+    return startLng;
+  }
 
-	public Long getEndLat() {
-		return endLat;
-	}
+  public void setStartLng(BigDecimal startLng) {
+    this.startLng = startLng;
+  }
 
-	public void setEndLat(Long endLat) {
-		this.endLat = endLat;
-	}
+  public BigDecimal getEndLat() {
+    return endLat;
+  }
 
-	public Long getEndLng() {
-		return endLng;
-	}
+  public void setEndLat(BigDecimal endLat) {
+    this.endLat = endLat;
+  }
 
-	public void setEndLng(Long endLng) {
-		this.endLng = endLng;
-	}
+  public BigDecimal getEndLng() {
+    return endLng;
+  }
 
-	public Long getBearing() {
-		return bearing;
-	}
+  public void setEndLng(BigDecimal endLng) {
+    this.endLng = endLng;
+  }
 
-	public void setBearing(Long bearing) {
-		this.bearing = bearing;
-	}
+  public BigDecimal getBearing() {
+    return bearing;
+  }
 
-	public String getAddress() {
-		return address;
-	}
+  public void setBearing(BigDecimal bearing) {
+    this.bearing = bearing;
+  }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+  public String getAddress() {
+    return address;
+  }
 
-	public boolean isOccupied() {
-		return occupied;
-	}
+  public void setAddress(String address) {
+    this.address = address;
+  }
 
-	public void setOccupied(boolean occupied) {
-		this.occupied = occupied;
-	}
+  public boolean isOccupied() {
+    return occupied;
+  }
 
-	public LocalTime getOccupiedTime() {
-		return occupiedTime;
-	}
+  public void setOccupied(boolean occupied) {
+    this.occupied = occupied;
+  }
 
-	public void setOccupiedTime(LocalTime occupiedTime) {
-		this.occupiedTime = occupiedTime;
-	}
-	
+  public LocalTime getOccupiedTime() {
+    return occupiedTime;
+  }
+
+  public void setOccupiedTime(LocalTime occupiedTime) {
+    this.occupiedTime = occupiedTime;
+  }
+
 
 
 }

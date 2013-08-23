@@ -20,6 +20,17 @@
     var roadWidth = 7.4338356804708745;
     var parkingSpaceLength = 0.006;
 
+    var ParkENG = {
+      'address': 'address',  
+      'startlat': 'startlat',
+      'startlng': 'startlng',
+      'endlat': 'endlat',
+      'endlng': 'endlng',
+      'bearing': 'bearing',
+      'lenght': 'lenght'
+    };
+    
+
     /* How does this script work ?
     listener -> onMarkerChange -> calcRoute - > processResult 
 
@@ -65,7 +76,7 @@
     var startLoc = startMatLibLatLon.toGoogleLatLng();
     var endMatLibLatLon = startMatLibLatLon.destPoint(currentParkingSpace.bearing,parkingSpaceLength);
     var endLoc = endMatLibLatLon.toGoogleLatLng();
-    addRowToTable(currentParkingSpace);
+    addRowToTable(currentParkingSpace,0);
 
       for (var i=1; i<spaceRequired;i++) {
 
@@ -79,7 +90,7 @@
           tempParkSpaceArray.push(tmpParkSpace);
 
 
-          addRowToTable(tmpParkSpace);
+          addRowToTable(tmpParkSpace,i);
           
         }
 
@@ -325,9 +336,9 @@ $(document).ready(function() {
 
 
     /**********************Util methods: ************************/
- function addRowToTable(parkingSpace)
+ function addRowToTable(parkingSpace,rowIndex)
   {
-    var table=document.getElementById("parkingTable");
+    var table=document.getElementById("parkingTableBody");
     var row=table.insertRow(-1);
     var cell1=row.insertCell(0);
     var cell2=row.insertCell(1);
@@ -338,13 +349,20 @@ $(document).ready(function() {
     var cell7=row.insertCell(6);
     var cell8=row.insertCell(7);
     cell1.innerHTML=$("#address").val();
+    cell1.id=ParkENG.address+rowIndex;
     cell2.innerHTML= parkingSpace.startLatLon.lat;
+    cell2.id=ParkENG.startlat+rowIndex;
     cell3.innerHTML= parkingSpace.startLatLon.lon;
+    cell3.id=ParkENG.startlng+rowIndex;
     cell4.innerHTML= parkingSpace.endLatLon.lat;
+    cell4.id=ParkENG.endlat+rowIndex;
     cell5.innerHTML= parkingSpace.endLatLon.lat;
+    cell5.id=ParkENG.endlng+rowIndex;
     cell6.innerHTML= parkingSpace.bearing;
+    cell6.id=ParkENG.bearing+rowIndex;
     cell7.innerHTML= parkingSpace.parkLength;
-    cell8.innerHTML= saveDeleteAction;
+    cell7.id=ParkENG.lenght+rowIndex;
+    cell8.innerHTML= saveDeleteAction(rowIndex);  
   }
 
     function setValueForDom(dom,value){
@@ -572,7 +590,32 @@ CircularArray.prototype.set = function(i,v){
 
 
 
-var saveDeleteAction =  '<a href=\'javascript:alert(\"test\")\'; class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a>      <a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
+function saveDeleteAction(rowIndex) {
+  return '<a href="javascript:saveNewParkingSpace(' + rowIndex + ');" class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a>      <a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
+}
+
+function testing(rowIndex){
+  var test = buildSaveHref(rowIndex);
+  alert(test);
+}
+
+function buildSaveHref(rowIndex){
+
+      var buildAddress = $("#"+ParkENG.address+rowIndex).val();
+      var buildAddress2 = $("#"+ParkENG.address+rowIndex).text();
+      var startLat = $("#"+ParkENG.startlat+rowIndex).val();
+      var startLat2 = $("#"+ParkENG.startlat+rowIndex).text();
+
+            var saveString = "NewParkingSpace" +
+                           "/save/?"+ParkENG.address+"="+$("#"+ParkENG.address+rowIndex).text()+
+                           "&"+ParkENG.startlat+"="+$("#"+ParkENG.startlat+rowIndex).text()+
+                           "&"+ParkENG.startlng+"="+$("#"+ParkENG.startlng+rowIndex).text()+
+                           "&"+ParkENG.endlat+"="+$("#"+ParkENG.endlat+rowIndex).text()+
+                           "&"+ParkENG.endlng+"="+$("#"+ParkENG.endlng+rowIndex).text()+
+                           "&"+ParkENG.bearing+"="+$("#"+ParkENG.bearing+rowIndex).text()+
+                           "&"+ParkENG.lenght+"="+$("#"+ParkENG.lenght+rowIndex).text();
+            return saveString;          
+  }
 
 
 

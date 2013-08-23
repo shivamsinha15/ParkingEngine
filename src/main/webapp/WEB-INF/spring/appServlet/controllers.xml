@@ -30,7 +30,7 @@
 	<mvc:view-controller path="showcase/faq" view-name="/WEB-INF/views/faq" />
 
 	<!-- ParkingEngine Routes -->
-	<!-- mvc:view-controller path="/" view-name="/parkingEngine/WEB-INF/views/index"/ -->
+	<mvc:view-controller path="/" view-name="/parkingEngine/WEB-INF/views/index"/>
 	<mvc:view-controller path="/NewParkingSpace"
 		view-name="/parkingEngine/WEB-INF/views/newparkingspace" />
 	<mvc:view-controller path="/NewParkingRule"

@@ -2,6 +2,27 @@
 <script type="text/javascript" src="./sharedResources/js/main.js"></script>
 <script type="text/javascript" src="./sharedResources/js/geomath.js"></script>
 
+ <script type="text/javascript">
+   <!--http://jdewit.github.io/bootstrap-timepicker/ -->
+
+        function saveNewParkingSpace(rowIndex){
+
+        var saveString = "NewParkingSpace" +
+                           "/save/?"+ParkENG.address+"="+$("#"+ParkENG.address+rowIndex).text()+
+                           "&"+ParkENG.startlat+"="+$("#"+ParkENG.startlat+rowIndex).text()+
+                           "&"+ParkENG.startlng+"="+$("#"+ParkENG.startlng+rowIndex).text()+
+                           "&"+ParkENG.endlat+"="+$("#"+ParkENG.endlat+rowIndex).text()+
+                           "&"+ParkENG.endlng+"="+$("#"+ParkENG.endlng+rowIndex).text()+
+                           "&"+ParkENG.bearing+"="+$("#"+ParkENG.bearing+rowIndex).text()+
+                           "&"+ParkENG.lenght+"="+$("#"+ParkENG.lenght+rowIndex).text();
+
+        $.ajax({url:saveString,success:function(result){
+                        $("#div1").html(result);
+                }});                   
+                      
+        }
+    </script>
+
 <div class="main">
 
     <div class="container">
@@ -113,7 +134,7 @@
                                 <th class="td-actions"> Save/Delete </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="parkingTableBody">
                             <!--
                             <tr>
                                 <td>Trident</td>
