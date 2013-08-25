@@ -2,6 +2,7 @@ package com.parkingengine.domain.entities;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,8 +15,14 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalTime;
+
+import com.parkingengine.json.JodaLocalTimeSerializer;
+
 
 @Entity
 @Table(name = PESpace.TABLE_NAME)
@@ -52,12 +59,15 @@ public class PESpace {
 
   @Column(name = "pes_occupied_time")
   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
+  @JsonSerialize(using = JodaLocalTimeSerializer.class)
   private LocalTime occupiedTime;
 
   // I believe this automatically adds the joining table
+
   @ManyToMany(targetEntity = com.parkingengine.domain.entities.PERule.class, fetch = FetchType.EAGER)
-  @JoinTable(name = "pe_space_rule", joinColumns = @JoinColumn(name = "pes_id"), inverseJoinColumns = @JoinColumn(name = "per_id"))
-  private Collection<PERule> parkingEngineRules;
+  @Cascade({CascadeType.ALL})
+  @JoinTable(name = "pe_space_rule", joinColumns = @JoinColumn(name = "pes_id"), inverseJoinColumns = @JoinColumn(name = "per_id") )
+  private List<PERule> parkingEngineRules;
 
   public Long getId() {
     return id;
@@ -67,7 +77,7 @@ public class PESpace {
     return parkingEngineRules;
   }
 
-  public void setParkingEngineRules(Collection<PERule> parkingEngineRules) {
+  public void setParkingEngineRules(List<PERule> parkingEngineRules) {
     this.parkingEngineRules = parkingEngineRules;
   }
 

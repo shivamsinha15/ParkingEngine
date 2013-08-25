@@ -19,6 +19,7 @@ public class PERuleDAOImpl extends GenericEjb3DAO<PERule> implements PERuleDAO {
 				"from " + getEntityBeanType().getName()).getResultList();
 	}
 
+
 	@Override
 	@PersistenceContext(unitName = "EconDatesDB")
 	public void setEntityManager(EntityManager entityManager) {

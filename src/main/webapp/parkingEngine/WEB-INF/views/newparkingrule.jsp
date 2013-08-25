@@ -23,7 +23,7 @@
                 showSeconds: false,
                 showMeridian: false,
                 defaultTime: false
-            });
+            });text
              $('#timepickerLimit').timepicker({
                 minuteStep: 1,
                 template: 'dropdown',

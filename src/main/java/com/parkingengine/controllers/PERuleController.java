@@ -1,5 +1,7 @@
 package com.parkingengine.controllers;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +17,7 @@ import com.parkingengine.domain.entities.PERule.DaysOfTheWeek;
 import com.parkingengine.service.PERuleService;
 
 @Controller
-public class NewParkingRuleController {
+public class PERuleController {
 
   @Inject
   PERuleService peRuleServiceImpl;
@@ -51,6 +53,11 @@ public class NewParkingRuleController {
     return peRuleServiceImpl.save(peRule);
   }
 
+  @RequestMapping("/PERule/all")
+  public @ResponseBody
+  List<PERule> getAllPERules() {
+    return peRuleServiceImpl.getAllPERules();
+  }
 
   @RequestMapping("/test")
   public @ResponseBody

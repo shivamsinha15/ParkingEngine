@@ -132,7 +132,46 @@ Hibernate:
    иии
  <script type="text/javascript" src="./plugin/bootstrap-timepicker/js/bootstrap-timepicker.min.js"/></script> 
 
+Sticky Point:
+<!-- Spring MVC REST template --->
+2013-08-24 23:46:17.649:WARN:oejs.ServletHandler:/parking-engine/PESpace/map/space/1/rule/1
+javax.servlet.ServletException: No adapter for handler [public int com.parkingengine.controllers.PESpaceController.mapPESpaceToPERules(long,long)]: Does your handler implement a supported interface like Controller?
 
+Note if @ResponseBody is not specified always has to return a string other wise throws the error above:
+@RequestMapping("/PESpace/map/space/{pespaceid}/rule/{peruleid}")
+  public @ResponseBody long mapPESpaceToPERules(@PathVariable("pespaceid") long pespaceid,@PathVariable("peruleid") long peruleid) {
+    return peSpaceServiceImpl.save(peSpace)
+  }
+  
+  
+  <!--Atomic Jta Transaction-->:
+  Was throwing the following error when attempting to retrieve multiple entities from various DAOs within the same transaction, then setting the value of one transaction to another:
+  com.atomikos.datasource.ResourceException: resume for XID 192.168.162.50.tm0000100012192.168.162.50.tm1 raised -5: invalid arguments were given for the XA operation
+  http://www.atomikos.com/Documentation/KnownProblems:
+  .
+  
+  1. According to the known problems site above: pinGlobalTxToPhysicalConnection="true"
+  Hence in Jetty-env.xml add the following: Which seemed to fix the problem:
+  
+  	<Call name="setProperty">
+						<Arg>pinGlobalTxToPhysicalConnection</Arg>
+						<Arg>true</Arg>
+    </Call>
+    
+  2. As an extra measure changed the root-context.xml to explicity define the transaction manager. Instead of retrieving them from JNDi
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 
 

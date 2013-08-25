@@ -20,6 +20,10 @@
 						<Arg>user</Arg>
 						<Arg>root</Arg>
 					</Call>
+					<Call name="setProperty">
+						<Arg>pinGlobalTxToPhysicalConnection</Arg>
+						<Arg>true</Arg>
+					</Call>
 				</Get>
 				<Set name="minPoolSize">5</Set>
 				<Set name="maxPoolSize">60</Set>
@@ -29,7 +33,7 @@
 
 
 
-	<New id="tx" class="org.eclipse.jetty.plus.jndi.Transaction">
+	<New id="transactionManager" class="org.eclipse.jetty.plus.jndi.Transaction">
 		<Arg>
 			<New class="com.atomikos.icatch.jta.UserTransactionImp" />
 		</Arg>

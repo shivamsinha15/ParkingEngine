@@ -1,11 +1,13 @@
 package com.parkingengine.controllers;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,7 +15,7 @@ import com.parkingengine.domain.entities.PESpace;
 import com.parkingengine.service.PESpaceService;
 
 @Controller
-public class NewParkingSpaceController {
+public class PESpaceController {
 
   @Inject
   PESpaceService peSpaceServiceImpl;
@@ -29,7 +31,7 @@ public class NewParkingSpaceController {
 
   @RequestMapping("/NewParkingSpace/save")
   public @ResponseBody
-  boolean withParamGroup(HttpServletRequest request) {
+  long withParamGroup(HttpServletRequest request) {
     PESpace peSpace = new PESpace();
     peSpace.setAddress(request.getParameter(ADDRESS));
     peSpace.setStartLat(BigDecimal.valueOf(Double.parseDouble(request.getParameter(STARTLAT))));
@@ -42,7 +44,18 @@ public class NewParkingSpaceController {
     // peSpace.setLength();
     return peSpaceServiceImpl.save(peSpace);
   }
+  
+  @RequestMapping("/PESpace/all")
+  public @ResponseBody
+  List<PESpace> getAllPESpaces() {
+    return peSpaceServiceImpl.getAllPESpaces();
+  }
 
+
+  @RequestMapping("/PESpace/map/spaceId/{peSpaceId}/ruleId/{peRuleId}")
+  public @ResponseBody long mapPESpaceToPERules(@PathVariable long peSpaceId,@PathVariable long peRuleId) {
+    return peSpaceServiceImpl.mapPESpaceToRule(peSpaceId, peRuleId);
+  }
 
 
   /*-
@@ -99,7 +112,7 @@ public class NewParkingSpaceController {
                            "&"+ParkENG.lenght+"="+$("#"+ParkENG.lenght+rowIndex).text();
 
         $.ajax({url:saveString,success:function(result){
-                        $("#div1").html(result);
+                        $("#address").html(result);
                 }});                   
                       
         }

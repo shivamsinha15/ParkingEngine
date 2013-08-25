@@ -27,7 +27,8 @@
       'endlat': 'endlat',
       'endlng': 'endlng',
       'bearing': 'bearing',
-      'lenght': 'lenght'
+      'lenght': 'lenght',
+      'id': 'id'
     };
     
 
@@ -365,6 +366,30 @@ $(document).ready(function() {
     cell8.innerHTML= saveDeleteAction(rowIndex);  
   }
 
+   function addRowToParkingSpaceTable(spaceId,result)
+  {
+    var table=document.getElementById("parkingTableBodym");
+    var row=table.insertRow(-1);
+    var cell1=row.insertCell(0);
+    var cell2=row.insertCell(1);
+    var cell3=row.insertCell(2);
+    var cell4=row.insertCell(3);
+    var cell5=row.insertCell(4);
+    var cell6=row.insertCell(5);
+    var cell7=row.insertCell(6);
+    var cell8=row.insertCell(7);
+    var spaceTableId = ParkENG.id+result.id;
+    cell1.innerHTML=result.id;
+    cell1.id=spaceTableId;
+    cell2.innerHTML= result.fromDay;
+    cell3.innerHTML= result.toDay;
+    cell4.innerHTML= result.cost; 
+    cell5.innerHTML= result.fromTime;
+    cell6.innerHTML= result.toTime;
+    cell7.innerHTML= result.timeLimit;
+    cell8.innerHTML= saveDeleteActionParkingSpaceTable(spaceId,result.id);  
+  }
+
     function setValueForDom(dom,value){
       //dom e.g "#slatitude"
       $(dom).val(value);
@@ -594,28 +619,11 @@ function saveDeleteAction(rowIndex) {
   return '<a href="javascript:saveNewParkingSpace(' + rowIndex + ');" class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a>      <a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
 }
 
-function testing(rowIndex){
-  var test = buildSaveHref(rowIndex);
-  alert(test);
+function saveDeleteActionParkingSpaceTable(spaceID,ruleID) {
+  return '<a href="javascript:mapSpaceToRule(' + spaceID + ',' + ruleID +');" class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a>      <a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
 }
 
-function buildSaveHref(rowIndex){
 
-      var buildAddress = $("#"+ParkENG.address+rowIndex).val();
-      var buildAddress2 = $("#"+ParkENG.address+rowIndex).text();
-      var startLat = $("#"+ParkENG.startlat+rowIndex).val();
-      var startLat2 = $("#"+ParkENG.startlat+rowIndex).text();
-
-            var saveString = "NewParkingSpace" +
-                           "/save/?"+ParkENG.address+"="+$("#"+ParkENG.address+rowIndex).text()+
-                           "&"+ParkENG.startlat+"="+$("#"+ParkENG.startlat+rowIndex).text()+
-                           "&"+ParkENG.startlng+"="+$("#"+ParkENG.startlng+rowIndex).text()+
-                           "&"+ParkENG.endlat+"="+$("#"+ParkENG.endlat+rowIndex).text()+
-                           "&"+ParkENG.endlng+"="+$("#"+ParkENG.endlng+rowIndex).text()+
-                           "&"+ParkENG.bearing+"="+$("#"+ParkENG.bearing+rowIndex).text()+
-                           "&"+ParkENG.lenght+"="+$("#"+ParkENG.lenght+rowIndex).text();
-            return saveString;          
-  }
 
 
 

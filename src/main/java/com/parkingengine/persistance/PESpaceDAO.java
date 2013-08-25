@@ -7,12 +7,12 @@ import com.parkingengine.domain.entities.PESpace;
 
 public interface PESpaceDAO extends GenericDAO<PESpace> {
 
-	final String JNDI_NAME = "PESpaceDAO";
+  final String JNDI_NAME = "PESpaceDAO";
 
-	List<PESpace> findAll();
+  List<PESpace> findAll();
 
-	void mergeCollection(Collection<PESpace> peSpaces);
+  void mergeCollection(Collection<PESpace> peSpaces);
 
-	void persistCollection(Collection<PESpace> peSpaces);
+  void persistCollection(Collection<PESpace> peSpaces);
 
 }

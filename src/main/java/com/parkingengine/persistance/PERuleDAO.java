@@ -7,12 +7,12 @@ import com.parkingengine.domain.entities.PERule;
 
 public interface PERuleDAO extends GenericDAO<PERule> {
 
-	final String JNDI_NAME = "PERuleDAO";
+  final String JNDI_NAME = "PERuleDAO";
 
-	List<PERule> findAll();
+  List<PERule> findAll();
 
-	void mergeCollection(Collection<PERule> peRules);
+  void mergeCollection(Collection<PERule> peRules);
 
-	void persistCollection(Collection<PERule> peRules);
+  void persistCollection(Collection<PERule> peRules);
 
 }

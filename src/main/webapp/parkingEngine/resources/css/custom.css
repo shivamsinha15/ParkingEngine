@@ -7,3 +7,11 @@ Last change:	03/25/2013
 Assigned to:	You
 
 -------------------------------------------------------------------*/
+
+
+body .modal {
+    /* new custom width */
+    width: 1000px; 
+    margin-left: -500px;
+    /* must be half of the width, minus scrollbar on the left (30px) */
+}
