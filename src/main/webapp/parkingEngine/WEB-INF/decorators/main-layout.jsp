@@ -57,13 +57,12 @@
 
 
 <!-- Placed at the end of the document so the pages load faster -->
-
 <script src="./sharedResources/js/libs/bootstrap.min.js"></script>
-
 <script src="./sharedResources/js/plugins/validate/jquery.validate.js"></script>
-
 <script src="./sharedResources/js/Application.js"></script>
-<script src="./sharedResources/js/demo/validation.js"></script>
+<script src="./sharedResources/js/demo/validation.js"></script>             
+
+
 
   
 

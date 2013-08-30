@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkingengine.domain.entities.PESpace;
+import com.parkingengine.service.PEMeterService;
 import com.parkingengine.service.PESpaceService;
 
 @Controller
@@ -19,6 +20,9 @@ public class PESpaceController {
 
   @Inject
   PESpaceService peSpaceServiceImpl;
+
+  @Inject
+  PEMeterService peMeterServiceImpl;
 
   private static final String ADDRESS = "address";
   private static final String STARTLAT = "startlat";
@@ -44,17 +48,24 @@ public class PESpaceController {
     // peSpace.setLength();
     return peSpaceServiceImpl.save(peSpace);
   }
-  
+
   @RequestMapping("/PESpace/all")
   public @ResponseBody
   List<PESpace> getAllPESpaces() {
     return peSpaceServiceImpl.getAllPESpaces();
   }
 
-
-  @RequestMapping("/PESpace/map/spaceId/{peSpaceId}/ruleId/{peRuleId}")
-  public @ResponseBody long mapPESpaceToPERules(@PathVariable long peSpaceId,@PathVariable long peRuleId) {
-    return peSpaceServiceImpl.mapPESpaceToRule(peSpaceId, peRuleId);
+  /*-
+   @RequestMapping("/PESpace/map/spaceId/{peSpaceId}/ruleId/{peRuleId}")
+   public @ResponseBody
+   long mapPESpaceToPERules(@PathVariable long peSpaceId, @PathVariable long peRuleId) {
+   return peSpaceServiceImpl.mapPESpaceToRule(peSpaceId, peRuleId);
+   }
+   */
+  @RequestMapping("/PESpace/map/spaceId/{peSpaceId}/meterId/{meterId}")
+  public @ResponseBody
+  long mapPESpaceToPEMeters(@PathVariable long peSpaceId, @PathVariable long meterId) {
+    return peMeterServiceImpl.mapPESpaceToMeter(peSpaceId, meterId);
   }
 
 

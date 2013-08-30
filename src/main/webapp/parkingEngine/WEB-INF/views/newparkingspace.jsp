@@ -1,57 +1,13 @@
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript" src="./sharedResources/js/main.js"></script>
 <script type="text/javascript" src="./sharedResources/js/geomath.js"></script>
+<script type="text/javascript" src="./sharedResources/js/main.js"></script>
+<script type="text/javascript" src="./sharedResources/js/NewParkingSpaceScript.js"></script>
 
- <script type="text/javascript">
-   <!--http://jdewit.github.io/bootstrap-timepicker/ -->
 
-        function saveNewParkingSpace(rowIndex){
+<script type="text/javascript">
 
-        var saveAddress =  $("#"+ParkENG.address+rowIndex).text();   
-        var saveStartLat = $("#"+ParkENG.startlat+rowIndex).text();
-        var savestartlng = $("#"+ParkENG.startlng+rowIndex).text();
-        var saveEndlat = $("#"+ParkENG.endlat+rowIndex).text();
-        var saveEndlng = $("#"+ParkENG.endlng+rowIndex).text();
-        var saveBearing = $("#"+ParkENG.bearing+rowIndex).text();
-        var saveLenght = $("#"+ParkENG.lenght+rowIndex).text();
 
-        var saveString = "NewParkingSpace" +
-                           "/save/?"+ParkENG.address+"="+saveAddress+
-                           "&"+ParkENG.startlat+"="+saveStartLat+
-                           "&"+ParkENG.startlng+"="+savestartlng+
-                           "&"+ParkENG.endlat+"="+saveEndlat+
-                           "&"+ParkENG.endlng+"="+saveEndlng+
-                           "&"+ParkENG.bearing+"="+saveBearing+
-                           "&"+ParkENG.lenght+"="+saveLenght;
-
-          $.ajax({url:saveString,success:function(result){
-                        $('#idm').text("Id: "+result);
-                        $('#addressm').text("Address: "+saveAddress);
-                        $('#slatitudem').text("Start Lat: "+saveStartLat);
-                        $('#slongitudem').text("Start Lng: "+savestartlng);
-                        $('#elatitudem').text("End Lat: "+saveEndlat);
-                        $('#elongitudem').text("End Lng: "+saveEndlng);
-                        $('#bearingm').text("Bearing: "+saveBearing);
-                        $('#myModal').modal('show');
-                        createSpaceToRuleTable(result);
-                }});           
-    }
-
-    function createSpaceToRuleTable(spaceId){
-        $.ajax({url:"PERule/all",success:function(result){
-                for (var i = 0; i < result.length; i++) { 
-                    addRowToParkingSpaceTable(spaceId,result[i]);
-                    }
-                }}); 
-    }  
-
-    function mapSpaceToRule(spaceId,ruleId){
-        $.ajax({url:"PESpace/map/spaceId/"+spaceId+"/ruleId/"+ruleId+"",success:function(result){
-                
-                }}); 
-    }
-
-    </script>
+</script>
 
 <div class="main">
 
@@ -143,6 +99,54 @@
 
       <!-------------------------^END OF FIRST ROW ------>
 
+
+                <div class="row">
+          <div class="span12">
+            <div class="widget stacked">
+             <div class="widget-header">
+                    <i class="icon-inbox"></i>
+                    <h3>New Parking Meter</h3>
+             </div> <!-- /widget-header -->
+            <div class="widget-content">
+              <table id="parkingMeterTable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Point Lat</th>
+                                <th>Point Lng</th>
+                                <th class="td-actions"> Save/Delete </th>
+                            </tr>
+                        </thead>
+                        <tbody id="parkingMeterTableBody">
+                            <!--
+                            <tr>
+                                <td>Trident</td>
+                                <td>Internet
+                                     Explorer 4.0</td>
+                                     <td>Trident</td>
+                                     <td>Trident</td>
+                                     <td>Trident</td>
+                                     <td>Trident</td>
+                                     <td>Trident</td>
+
+                                <td class="td-actions">
+                                    <a href="javascript:;" class="btn btn-small btn-warning">
+                                        <i class="btn-icon-only icon-ok"></i>                                       
+                                    </a>
+                                    
+                                    <a href="javascript:;" class="btn btn-small">
+                                        <i class="btn-icon-only icon-remove"></i>                                       
+                                    </a>
+                                </td>
+                            </tr> -->
+                            </tbody>
+                        </table>
+                </div> <!-- /widget-content -->  
+            </div> <!-- /widget -->                 
+         </div> <!-- /span6 -->    
+        </div> <!-- /row -->
+
+      <!-------------------------^ END OF Second ROW ------>
+
     <div class="row">
           <div class="span12">
             <div class="widget stacked">
@@ -193,7 +197,9 @@
          </div> <!-- /span6 -->    
         </div> <!-- /row -->
 
-      <!-------------------------^ END OF SECOND ROW ------>
+      <!-------------------------^ END OF Third ROW ------>
+
+
 
       <!-- Button trigger modal -->
   <a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Launch demo modal</a>
@@ -204,7 +210,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h3 class="modal-title">Add Rules To Parking Space</h3>
+          <h3 class="modal-title">Add Rules To Meters</h3>
         </div>
         <div class="modal-body">
       
@@ -217,7 +223,7 @@
                     
                 <div class="widget-header">
                     <i class="icon-road"></i>
-                    <h3>Saved Parking Space</h3>
+                    <h3>Saved Meter</h3>
                 </div> <!-- /widget-header -->
                 
                 <div class="widget-content">
@@ -227,18 +233,10 @@
                     <form action="/" id="validation-formm" class="form-horizontal" novalidate="novalidate">
                         <label id="idm">Id: </label>
                          </br>
-                            <label id="addressm" >Address: </label>
+                            <label id="pointlatm">Point Lat: </label>
                          </br>
-                            <label id="slatitudem">Start Lat: </label>
-                         </br>
-                            <label id="slongitudem">Start Lng: </label>
-                         </br>
-                             <label id="elatitudem">End Lat: </label>
-                         </br>
-                            <label id="elongitudem">End Lng: </label>
-                         </br>
-                            <label id="bearingm">Bearing: </label>
-                         </br>    
+                            <label id="pointlngm">Point Lng: </label>
+                         </br>   
                         </form>
                     
                 </div> <!-- /widget-content -->
@@ -268,13 +266,13 @@
                             <th class="td-actions"> Add </th>
                             </tr>
                         </thead>
-                            <tbody id="parkingTableBodym">
+                            <tbody id="parkingRuleTableBodym">
 
                             </tbody>
                         </table>
                 </div> <!-- /widget-content 2nd -->     
             </div> <!-- /widget 2nd -->   
-        </div> <!-- /span6 2nd -->  
+        </div> <!-- /span7 2nd -->  
       </div> <!-- /row -->
         </div>
         <div class="modal-footer">

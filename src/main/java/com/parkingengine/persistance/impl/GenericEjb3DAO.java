@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 
 public abstract class GenericEjb3DAO<T> implements com.parkingengine.persistance.GenericDAO<T> {
 

@@ -1,23 +1,15 @@
 package com.parkingengine.domain.entities;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalTime;
 
@@ -35,20 +27,20 @@ public class PESpace {
   @Column(name = "pes_id")
   private Long id;
 
-  @Column(name = "pes_start_lat", scale = 14, precision = 19)
+  @Column(name = "pes_start_lat", scale = 15, precision = 19)
   @Type(type = "org.hibernate.type.BigDecimalType")
   private BigDecimal startLat;
 
-  @Column(name = "pes_start_lng", scale = 14, precision = 19)
+  @Column(name = "pes_start_lng", scale = 15, precision = 19)
   private BigDecimal startLng;
 
-  @Column(name = "pes_end_lat", scale = 14, precision = 19)
+  @Column(name = "pes_end_lat", scale = 15, precision = 19)
   private BigDecimal endLat;
 
-  @Column(name = "pes_end_lng", scale = 14, precision = 19)
+  @Column(name = "pes_end_lng", scale = 15, precision = 19)
   private BigDecimal endLng;
 
-  @Column(name = "pes_bearing", scale = 14, precision = 19)
+  @Column(name = "pes_bearing", scale = 15, precision = 19)
   private BigDecimal bearing;
 
   @Column(name = "pes_address")
@@ -63,22 +55,23 @@ public class PESpace {
   private LocalTime occupiedTime;
 
   // I believe this automatically adds the joining table
+  /*-
+   @ManyToMany(targetEntity = com.parkingengine.domain.entities.PERule.class, fetch = FetchType.EAGER)
+   @Cascade({CascadeType.ALL})
+   @JoinTable(name = "pe_space_rule", joinColumns = @JoinColumn(name = "pes_id"), inverseJoinColumns = @JoinColumn(name = "per_id") )
+   private List<PERule> parkingEngineRules;
+  
+   public Collection<PERule> getParkingEngineRules() {
+   return parkingEngineRules;
+   }
 
-  @ManyToMany(targetEntity = com.parkingengine.domain.entities.PERule.class, fetch = FetchType.EAGER)
-  @Cascade({CascadeType.ALL})
-  @JoinTable(name = "pe_space_rule", joinColumns = @JoinColumn(name = "pes_id"), inverseJoinColumns = @JoinColumn(name = "per_id") )
-  private List<PERule> parkingEngineRules;
+   public void setParkingEngineRules(List<PERule> parkingEngineRules) {
+   this.parkingEngineRules = parkingEngineRules;
+   }
+   */
 
   public Long getId() {
     return id;
-  }
-
-  public Collection<PERule> getParkingEngineRules() {
-    return parkingEngineRules;
-  }
-
-  public void setParkingEngineRules(List<PERule> parkingEngineRules) {
-    this.parkingEngineRules = parkingEngineRules;
   }
 
   public void setId(Long id) {

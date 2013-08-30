@@ -8,9 +8,9 @@
     var directionsService = new google.maps.DirectionsService();
     var parraCoordinates = new google.maps.LatLng(-33.815154, 151.006109);
     var markerArray = [];
+    var meterMarkerArray = [];
     var tempParkSpaceArray = [];
     var compassDegrees;
-
 
     //CONSTANTS;
     var sMarkLat = '#slatitude';
@@ -28,8 +28,18 @@
       'endlng': 'endlng',
       'bearing': 'bearing',
       'lenght': 'lenght',
-      'id': 'id'
+      'id': 'id',
+      'pointlat': 'pointlat',
+      'pointlng': 'pointlng',
     };
+
+
+    //PARKING METER STUFF
+    var meterBearing = 285.73219612002520;
+    var meterDistance = 0.030;
+    var parraCoordinatesMathLib = new LatLon(parraCoordinates.lat(),parraCoordinates.lng());
+    var meterLatLonMathLib =  parraCoordinatesMathLib.destPoint(meterBearing,meterDistance);
+    var meterLatLngGoogle =  meterLatLonMathLib.toGoogleLatLng();
     
 
     /* How does this script work ?
@@ -203,13 +213,15 @@ function calcRoute() {
 
 
 /**********************Initialization: ************************/
-$(document).ready(function() { 
+$(window).load(function() { 
 
   initialize();
 
+//http://stackoverflow.com/questions/13228852/uncaught-typeerror-object-object-object-has-no-method-autocomplete
   $(function() {
-    $("#address").autocomplete({
-          //This bit uses the geocoder to fetch address values
+   /* $("#address").autocomplete({
+      
+             //This bit uses the geocoder to fetch address values
           source: function(request, response) {
             geocoder.geocode( {'address': request.term }, function(results, status) {
               response($.map(results, function(item) {
@@ -230,35 +242,12 @@ $(document).ready(function() {
             startMarker.setPosition(location);
             map.setCenter(location);
           }
-        });
+        });*/
   });
 
-      //Add listener to startMarker for reverse geocoding
-      google.maps.event.addListener(startMarker, 'drag', function() {
-        geocoder.geocode({'latLng': startMarker.getPosition()}, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            if (results[0]) {
-              $('#address').val(results[0].formatted_address);
-              $('#slatitude').val(startMarker.getPosition().lat());
-              $('#slongitude').val(startMarker.getPosition().lng());
-              onMarkerChange();
-            }
-          }
-        }.debounce(10000,false));
-      });
 
-      //Add listener to startMarker for reverse geocoding
-      google.maps.event.addListener(endMarker, 'drag', function() {
-        geocoder.geocode({'latLng': endMarker.getPosition()}, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            if (results[0]) {
-              $('#elatitude').val(endMarker.getPosition().lat());
-              $('#elongitude').val(endMarker.getPosition().lng());
-              onMarkerChange();
-            }
-          }
-        }.debounce(10000,false));
-      });
+
+
     });
 
     function initialize(){
@@ -278,6 +267,7 @@ $(document).ready(function() {
       geocoder = new google.maps.Geocoder();
 
       initStartEndMarkers();
+      initParkingMeterMarkers();
 
 
 
@@ -294,6 +284,93 @@ $(document).ready(function() {
       directionsDisplay = new google.maps.DirectionsRenderer(directionRendererOpt);
       directionsDisplay.setMap(map);
 
+            //Add listener to startMarker for reverse geocoding
+      google.maps.event.addListener(startMarker, 'drag', function() {
+        geocoder.geocode({'latLng': startMarker.getPosition()}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            if (results[0]) {
+              $('#address').val(results[0].formatted_address);
+              $('#slatitude').val(startMarker.getPosition().lat());
+              $('#slongitude').val(startMarker.getPosition().lng());
+              onMarkerChange();
+            }
+          }
+        });
+      }.debounce(10000,false));
+
+      //Add listener to startMarker for reverse geocoding
+      google.maps.event.addListener(endMarker, 'drag', function() {
+        geocoder.geocode({'latLng': endMarker.getPosition()}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            if (results[0]) {
+              $('#elatitude').val(endMarker.getPosition().lat());
+              $('#elongitude').val(endMarker.getPosition().lng());
+              onMarkerChange();
+            }
+          }
+        });
+      }.debounce(10000,false));
+
+    //Meter Listeners
+    google.maps.event.addListener(meterMarkerArray[0], 'drag', function() {
+    geocoder.geocode({'latLng': meterMarkerArray[0].getPosition()}, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                if (results[0]) {
+                  var table=document.getElementById("parkingMeterTableBody");
+                  var row=table.insertRow(-1);
+                  var cell1=row.insertCell(0);
+                  var cell2=row.insertCell(1);
+                  var cell3=row.insertCell(2);
+                  cell1.innerHTML=meterMarkerArray[0].getPosition().lat();
+                  cell1.id=ParkENG.pointlat+0;
+                  cell2.innerHTML= meterMarkerArray[0].getPosition().lng();
+                  cell2.id=ParkENG.pointlng+0;
+                  cell3.innerHTML=parkMeterSaveDeleteAction(0);
+                }
+              }
+            });
+          }.debounce(10000,false));
+
+    google.maps.event.addListener(meterMarkerArray[1], 'drag', function() {
+    geocoder.geocode({'latLng': meterMarkerArray[1].getPosition()}, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                if (results[0]) {
+                  var table=document.getElementById("parkingMeterTableBody");
+                  var row=table.insertRow(-1);
+                  var cell1=row.insertCell(0);
+                  var cell2=row.insertCell(1);
+                  var cell3=row.insertCell(2);
+                  cell1.innerHTML=meterMarkerArray[1].getPosition().lat();
+                  cell1.id=ParkENG.pointlat+1;
+                  cell2.innerHTML= meterMarkerArray[1].getPosition().lng();
+                  cell2.id=ParkENG.pointlng+1;
+                  cell3.innerHTML=parkMeterSaveDeleteAction(1);
+                }
+              }
+            });
+          }.debounce(10000,false));
+
+    google.maps.event.addListener(meterMarkerArray[2], 'drag', function() {
+    geocoder.geocode({'latLng': meterMarkerArray[2].getPosition()}, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                if (results[0]) {
+                  var table=document.getElementById("parkingMeterTableBody");
+                  var row=table.insertRow(-1);
+                  var cell1=row.insertCell(0);
+                  var cell2=row.insertCell(1);
+                  var cell3=row.insertCell(2);
+                  cell1.innerHTML=meterMarkerArray[2].getPosition().lat();
+                  cell1.id=ParkENG.pointlat+2;
+                  cell2.innerHTML= meterMarkerArray[2].getPosition().lng();
+                  cell2.id=ParkENG.pointlng+2;
+                  cell3.innerHTML=parkMeterSaveDeleteAction(2)
+                }
+              }
+            });
+          }.debounce(10000,false));
+
+
+      //NOT SURE IF THIS IS USED
       compassDegrees = new CircularArray(4);
       compassDegrees.set(0,0);
       compassDegrees.set(1,90);
@@ -320,19 +397,54 @@ $(document).ready(function() {
         position: parraCoordinates
       });
 
-
-
       startMarker = new google.maps.Marker({
         map: map,
         draggable: true,
         position: parraCoordinates
       });
 
-
-
       markerArray.push(startMarker);
       markerArray.push(endMarker);
     }
+
+
+    function initParkingMeterMarkers(){
+      var pinColor = "008000";
+      var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+        new google.maps.Size(21, 34),
+        new google.maps.Point(0,0),
+        new google.maps.Point(10, 34));
+
+
+        marker1 = new google.maps.Marker({
+        map: map,
+        position: meterLatLngGoogle,
+        draggable: true,
+        icon: pinImage
+      });
+
+        marker2 = new google.maps.Marker({
+        map: map,
+        position: meterLatLngGoogle,
+        icon: pinImage,
+        draggable: true
+      });
+
+
+      marker3 = new google.maps.Marker({
+        map: map,
+        position: meterLatLngGoogle,
+        icon: pinImage,
+        draggable: true
+      });  
+
+      meterMarkerArray.push(marker1);
+      meterMarkerArray.push(marker2);
+      meterMarkerArray.push(marker3);
+
+    }
+
+
 
 
 
@@ -366,9 +478,9 @@ $(document).ready(function() {
     cell8.innerHTML= saveDeleteAction(rowIndex);  
   }
 
-   function addRowToParkingSpaceTable(spaceId,result)
+   function addRowToParkingRuleTable(meterId,result)
   {
-    var table=document.getElementById("parkingTableBodym");
+    var table=document.getElementById("parkingRuleTableBodym");
     var row=table.insertRow(-1);
     var cell1=row.insertCell(0);
     var cell2=row.insertCell(1);
@@ -378,16 +490,16 @@ $(document).ready(function() {
     var cell6=row.insertCell(5);
     var cell7=row.insertCell(6);
     var cell8=row.insertCell(7);
-    var spaceTableId = ParkENG.id+result.id;
+    var ruleTableId = ParkENG.id+result.id;
     cell1.innerHTML=result.id;
-    cell1.id=spaceTableId;
+    cell1.id=ruleTableId;
     cell2.innerHTML= result.fromDay;
     cell3.innerHTML= result.toDay;
     cell4.innerHTML= result.cost; 
     cell5.innerHTML= result.fromTime;
     cell6.innerHTML= result.toTime;
     cell7.innerHTML= result.timeLimit;
-    cell8.innerHTML= saveDeleteActionParkingSpaceTable(spaceId,result.id);  
+    cell8.innerHTML= saveDeleteActionParkingRuleTable(meterId,result.id);  
   }
 
     function setValueForDom(dom,value){
@@ -614,16 +726,24 @@ CircularArray.prototype.set = function(i,v){
 }
 
 
-
 function saveDeleteAction(rowIndex) {
-  return '<a href="javascript:saveNewParkingSpace(' + rowIndex + ');" class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a>      <a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
+  return '<a href="javascript:saveNewParkingSpace(' + rowIndex + ');" class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a>      <a href="javascript:removeCurrentRow(\'parkingTableBody\',' + rowIndex  + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
 }
 
-function saveDeleteActionParkingSpaceTable(spaceID,ruleID) {
-  return '<a href="javascript:mapSpaceToRule(' + spaceID + ',' + ruleID +');" class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a>      <a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
+function parkMeterSaveDeleteAction(rowIndex) {
+  return '<a href="javascript:saveParkingMeter(' + rowIndex + ');" class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a>      <a href="javascript:removeCurrentRow(\'parkingMeterTableBody\',' + rowIndex  + ');" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
 }
 
 
+function saveDeleteActionParkingRuleTable(meterId,ruleId) {
+  return '<a href="javascript:mapMeterToRule(' + meterId + ',' + ruleId +');" class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a>      <a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
+}
+
+
+function removeCurrentRow(tableBodyID,rowID) {
+  var removeParkingTableBody = document.getElementById(tableBodyID);
+  removeParkingTableBody.deleteRow(rowID);
+}
 
 
 

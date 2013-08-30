@@ -12,11 +12,12 @@
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<class>com.parkingengine.domain.entities.PERule</class>
 		<class>com.parkingengine.domain.entities.PESpace</class>
+		<class>com.parkingengine.domain.entities.PEMeter</class>
 
 
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
 		</properties>
 
 	</persistence-unit>
