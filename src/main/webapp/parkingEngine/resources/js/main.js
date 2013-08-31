@@ -469,7 +469,7 @@ $(window).load(function() {
     cell3.id=ParkENG.startlng+rowIndex;
     cell4.innerHTML= parkingSpace.endLatLon.lat;
     cell4.id=ParkENG.endlat+rowIndex;
-    cell5.innerHTML= parkingSpace.endLatLon.lat;
+    cell5.innerHTML= parkingSpace.endLatLon.lon;
     cell5.id=ParkENG.endlng+rowIndex;
     cell6.innerHTML= parkingSpace.bearing;
     cell6.id=ParkENG.bearing+rowIndex;
