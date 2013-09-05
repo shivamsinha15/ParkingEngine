@@ -21,7 +21,7 @@
         var savePointLat =  $("#"+ParkENG.pointlat+rowIndex).text();   
         var savePointLng = $("#"+ParkENG.pointlng+rowIndex).text();
         setModalFields(savePointLat,savePointLng);
-        var saveMeterString = ("PEMeter/save/pointLat/"+savePointLat+"/pointLng/"+savePointLng);
+        var saveMeterString = ("PEMeter/save/pointLat/"+savePointLat+"/pointLng/"+savePointLng+"/");
         $.ajax({url:saveMeterString,success:function(result){
                   saveAllParkingSpace(result);
             }});

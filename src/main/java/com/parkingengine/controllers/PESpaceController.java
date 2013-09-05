@@ -52,7 +52,11 @@ public class PESpaceController {
   @RequestMapping("/PESpace/all")
   public @ResponseBody
   List<PESpace> getAllPESpaces() {
-    return peSpaceServiceImpl.getAllPESpaces();
+    List<PESpace> peSpaces = peSpaceServiceImpl.getAllPESpaces();
+    for (PESpace peSpace : peSpaces) {
+      peSpace.setRuleIds(peSpaceServiceImpl.getRuleIds(peSpace.getId()));
+    }
+    return peSpaces;
   }
 
   /*-
@@ -66,6 +70,13 @@ public class PESpaceController {
   public @ResponseBody
   long mapPESpaceToPEMeters(@PathVariable long peSpaceId, @PathVariable long meterId) {
     return peMeterServiceImpl.mapPESpaceToMeter(peSpaceId, meterId);
+  }
+
+
+  @RequestMapping("/PESpace/spaceId/{peSpaceId}/occupied/{occupied}")
+  public @ResponseBody
+  long setIsOccupied(@PathVariable long peSpaceId, @PathVariable boolean occupied) {
+    return peSpaceServiceImpl.setIsOccupied(peSpaceId, occupied);
   }
 
 

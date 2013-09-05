@@ -14,5 +14,7 @@ public interface PESpaceDAO extends GenericDAO<PESpace> {
   void mergeCollection(Collection<PESpace> peSpaces);
 
   void persistCollection(Collection<PESpace> peSpaces);
+  
+  List<Long> getRuleIds(long spaceId); 
 
 }

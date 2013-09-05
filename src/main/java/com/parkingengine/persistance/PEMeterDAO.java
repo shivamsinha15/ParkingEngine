@@ -15,4 +15,8 @@ public interface PEMeterDAO extends GenericDAO<PEMeter> {
 
   void persistCollection(Collection<PEMeter> peMeters);
 
+  List<Long> getRuleIds(long meterId);
+
+  List<Long> getSpaceIds(long meterId);
+
 }

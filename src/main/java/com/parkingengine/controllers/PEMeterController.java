@@ -1,6 +1,7 @@
 package com.parkingengine.controllers;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -17,7 +18,13 @@ public class PEMeterController {
 
   @Inject
   PEMeterService peMeterServiceImpl;
-  
+
+  @RequestMapping("/PEMeter/all")
+  public @ResponseBody
+  List<PEMeter> getAll() {
+    return peMeterServiceImpl.getAllPEMeter();
+  }
+
   @RequestMapping("/PEMeter/save/pointLat/{pointLat}/pointLng/{pointLng}")
   public @ResponseBody
   long mapPESpaceToPERules(@PathVariable String pointLat, @PathVariable String pointLng) {
@@ -34,10 +41,10 @@ public class PEMeterController {
 
     return peMeterServiceImpl.save(peMeter);
   }
-  
+
   @RequestMapping("/PEMeter/map/meterId/{meterId}/ruleId/{ruleId}")
   public @ResponseBody
-  long mapPEMeterToPERules(@PathVariable long meterId,@PathVariable  long ruleId){
+  long mapPEMeterToPERules(@PathVariable long meterId, @PathVariable long ruleId) {
     return peMeterServiceImpl.mapPEMeterToPERules(meterId, ruleId);
   }
 

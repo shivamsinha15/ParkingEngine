@@ -34,6 +34,19 @@ public class PESpaceService {
     return peSpaceId;
   }
 
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public long setIsOccupied(long spaceId, boolean isOccupied) {
+    PESpace peSpace = peSpaceDAOImpl.findById(spaceId);
+    peSpace.setOccupied(isOccupied);
+    return peSpaceDAOImpl.saveOrUpdate(peSpace).getId();
+  }
+  
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public List<Long> getRuleIds(long peSpaceId){
+    return peSpaceDAOImpl.getRuleIds(peSpaceId);
+  }
+
+
   public List<PESpace> getAllPESpaces() {
     return peSpaceDAOImpl.findAll();
   }

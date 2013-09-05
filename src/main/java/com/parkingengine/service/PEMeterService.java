@@ -31,7 +31,15 @@ public class PEMeterService {
   PERuleDAO peRuleDAOImpl;
 
   public List<PEMeter> getAllPEMeter() {
-    return peMeterDAOImpl.findAll();
+    List<PEMeter> peMeters = peMeterDAOImpl.findAll();
+    for (PEMeter peMeter : peMeters) {
+      Long meterID = peMeter.getId();
+      List<Long> ruleIds = peMeterDAOImpl.getRuleIds(meterID);
+      List<Long> spaceIds = peMeterDAOImpl.getSpaceIds(meterID);
+      peMeter.setParkingRuleIds(ruleIds);
+      peMeter.setParkingSpaceIds(spaceIds);
+    }
+    return peMeters;
   }
 
   private static final Logger LOG = LoggerFactory.getLogger(PEMeterService.class);
