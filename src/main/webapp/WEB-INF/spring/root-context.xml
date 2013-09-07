@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/tx
@@ -12,7 +13,9 @@
 	http://www.springframework.org/schema/context 
 	http://www.springframework.org/schema/context/spring-context.xsd
 	http://www.springframework.org/schema/mvc
-http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 
 	<!--So you can use @Transactional -->
@@ -21,18 +24,42 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 	<!--Auto discovers transaction manage in default JNDI name Space -->
 	<!--tx:jta-transaction-manager / -->
 	<bean id="AtomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager"
-		init-method="init" destroy-method="close">
+		init-method="init" destroy-method="close" depends-on="setMyAtomikosSystemProps">
 		<property name="forceShutdown" value="false" />
 	</bean>
 
-	<bean id="AtomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+	<bean id="AtomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp"
+		depends-on="setMyAtomikosSystemProps">
 		<property name="transactionTimeout" value="300" />
 	</bean>
 
 	<bean id="transactionManager"
-		class="org.springframework.transaction.jta.JtaTransactionManager">
+		class="org.springframework.transaction.jta.JtaTransactionManager"
+		depends-on="setMyAtomikosSystemProps">
 		<property name="transactionManager" ref="AtomikosTransactionManager" />
 		<property name="userTransaction" ref="AtomikosUserTransaction" />
+	</bean>
+
+
+	<bean id="setMyAtomikosSystemProps"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject">
+			<!-- System.getProperties() -->
+			<bean
+				class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+				<property name="targetClass" value="java.lang.System" />
+				<property name="targetMethod" value="getProperties" />
+			</bean>
+		</property>
+		<property name="targetMethod" value="putAll" />
+		<property name="arguments">
+			<!-- The new Properties -->
+			<util:properties>
+				<prop key="com.atomikos.icatch.file">src/main/webapp/WEB-INF/spring/jta.properties</prop>
+				<prop key="com.atomikos.icatch.hide_init_file_path">false</prop>
+				<!-- prop key="com.atomikos.icatch.no_file">true</prop -->
+			</util:properties>
+		</property>
 	</bean>
 
 
@@ -59,7 +86,8 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 		</property>
 	</bean>
 
-	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"
+		depends-on="transactionManager">
 		<property name="jndiName" value="jdbc/myds" />
 	</bean>
 
@@ -67,7 +95,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="persistenceUnitName" value="EconDatesDB" />
+		<property name="persistenceUnitName" value="ParkDB" />
 		<property name="persistenceXmlLocation" value="/WEB-INF/spring/jpa-prod-persistence.xml" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">

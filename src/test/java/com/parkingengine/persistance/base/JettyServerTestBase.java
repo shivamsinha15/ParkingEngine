@@ -24,7 +24,7 @@ public abstract class JettyServerTestBase {
   protected static Collection<Field> fields;
   private static ApplicationContext context;
 
-  @BeforeClass
+ // @BeforeClass
   public static void startWebapp() throws Exception {
 
     server = new Server();
@@ -47,7 +47,7 @@ public abstract class JettyServerTestBase {
 
   }
 
-  @AfterClass
+  //@AfterClass
   public static void stopWebapp() throws Exception {
     server.dump();
   }
@@ -69,7 +69,7 @@ public abstract class JettyServerTestBase {
    * injected the member variables of the extended where annotated with @Inject.
    */
 
-  @Before
+  //@Before
   public void intialiseFields() throws BeansException, IllegalArgumentException,
       IllegalAccessException {
     setFields();

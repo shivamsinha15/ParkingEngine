@@ -8,13 +8,13 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
-
+/*
 @ContextConfiguration(locations = { "classpath:application-testcontext.xml",
 		"classpath:test-infrastructure.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
 		DirtiesContextTestExecutionListener.class,
-		TransactionalTestExecutionListener.class })
+		TransactionalTestExecutionListener.class })*/
 public abstract class ApplicationContextTestBase {
 
 	

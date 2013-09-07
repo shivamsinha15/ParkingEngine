@@ -34,7 +34,7 @@ public class PESpaceDAOImpl extends GenericEjb3DAO<PESpace> implements PESpaceDA
     return entityManager.createQuery("from " + getEntityBeanType().getName()).getResultList();
   }
 
-  @PersistenceContext(unitName = "EconDatesDB")
+  @PersistenceContext(unitName = "ParkDB")
   public void setEntityManager(EntityManager entityManager) {
     this.entityManager = entityManager;
 

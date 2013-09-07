@@ -15,7 +15,7 @@ import com.parkingengine.persistance.base.JettyServerTestBase;
 
 public class PERuleDAOJettyTest extends JettyServerTestBase {
 
-
+  /*
   @Inject
   PERuleDAO peRuleDAOImpl;
 
@@ -29,7 +29,7 @@ public class PERuleDAOJettyTest extends JettyServerTestBase {
 
 
   }
-
+*/
 
   @Override
   protected void setFields() {

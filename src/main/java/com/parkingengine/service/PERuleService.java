@@ -19,7 +19,7 @@ public class PERuleService {
   @Inject
   PERuleDAO peRuleDAOImpl;
 
-  @PersistenceUnit(unitName = "EconDatesDB")
+  @PersistenceUnit(unitName = "ParkDB")
   EntityManagerFactory emf;
 
   public List<PERule> getAllPERules() {

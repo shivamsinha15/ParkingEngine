@@ -17,7 +17,7 @@ import com.parkingengine.persistance.base.ApplicationContextTestBase;
 
 public class PERuleDAOSpringTest extends ApplicationContextTestBase {
 
-
+  /*
   @Inject
   PERuleDAO peRuleDAOImpl;
 
@@ -45,4 +45,5 @@ public class PERuleDAOSpringTest extends ApplicationContextTestBase {
     assertEquals(1, 1);
     assertEquals(1, 1);
   }
+  */
 }

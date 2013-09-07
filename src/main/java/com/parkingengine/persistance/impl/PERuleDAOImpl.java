@@ -21,7 +21,7 @@ public class PERuleDAOImpl extends GenericEjb3DAO<PERule> implements PERuleDAO {
 
 
 	@Override
-	@PersistenceContext(unitName = "EconDatesDB")
+	@PersistenceContext(unitName = "ParkDB")
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 

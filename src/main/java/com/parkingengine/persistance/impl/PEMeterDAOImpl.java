@@ -34,7 +34,7 @@ public class PEMeterDAOImpl extends GenericEjb3DAO<PEMeter> implements PEMeterDA
   }
 
   @Override
-  @PersistenceContext(unitName = "EconDatesDB")
+  @PersistenceContext(unitName = "ParkDB")
   public void setEntityManager(EntityManager entityManager) {
     this.entityManager = entityManager;
 

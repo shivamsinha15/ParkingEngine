@@ -9,12 +9,12 @@
 		<Arg>jdbc/myds</Arg>
 		<Arg>
 			<New class="com.atomikos.jdbc.AtomikosDataSourceBean">
-				<Set name="UniqueResourceName">econdate</Set>
+				<Set name="UniqueResourceName">ParkDB</Set>
 				<Set name="xaDataSourceClassName">com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</Set>
 				<Get name="xaProperties">
 					<Call name="setProperty">
 						<Arg>url</Arg>
-						<Arg>jdbc:mysql://localhost:3306/econdate</Arg>
+						<Arg>jdbc:mysql://localhost:3306/ParkDB</Arg>
 					</Call>
 					<Call name="setProperty">
 						<Arg>user</Arg>
