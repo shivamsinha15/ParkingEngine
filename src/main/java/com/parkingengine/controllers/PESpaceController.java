@@ -1,16 +1,21 @@
 package com.parkingengine.controllers;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.parkingengine.domain.entities.PEMeter;
 import com.parkingengine.domain.entities.PESpace;
 import com.parkingengine.service.PEMeterService;
 import com.parkingengine.service.PESpaceService;
@@ -58,6 +63,21 @@ public class PESpaceController {
     }
     return peSpaces;
   }
+
+  @RequestMapping(value = "/PESpace/alljsonp", produces = "application/json")
+  public @ResponseBody
+  String jsonP(HttpServletRequest request) throws JsonGenerationException,
+      JsonMappingException, IOException {
+
+    String callBackValue = request.getParameter("callback");
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    List<PESpace> peSpaces = peSpaceServiceImpl.getAllPESpaces();
+    String responseString = callBackValue + "(" + objectMapper.writeValueAsString(peSpaces) + ");";
+    return responseString;
+  }
+
+
 
   /*-
    @RequestMapping("/PESpace/map/spaceId/{peSpaceId}/ruleId/{peRuleId}")

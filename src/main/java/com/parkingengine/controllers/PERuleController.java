@@ -1,11 +1,15 @@
 package com.parkingengine.controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.LocalTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -58,6 +62,20 @@ public class PERuleController {
   List<PERule> getAllPERules() {
     return peRuleServiceImpl.getAllPERules();
   }
+
+  @RequestMapping(value = "/PERule/alljsonp", produces = "application/json")
+  public @ResponseBody
+  String jsonP(HttpServletRequest request) throws JsonGenerationException,
+      JsonMappingException, IOException {
+
+    String callBackValue = request.getParameter("callback");
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    List<PERule> peRules = peRuleServiceImpl.getAllPERules();
+    String responseString = callBackValue + "(" + objectMapper.writeValueAsString(peRules) + ");";
+    return responseString;
+  }
+
 
   @RequestMapping("/test")
   public @ResponseBody

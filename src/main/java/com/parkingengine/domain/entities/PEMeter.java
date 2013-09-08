@@ -55,9 +55,11 @@ public class PEMeter {
   private List<PESpace> parkingSpaces;
 
   @Transient
+  @JsonIgnore
   private List<Long> parkingSpaceIds;
 
   @Transient
+  @JsonIgnore
   private List<Long> parkingRuleIds;
 
   public Long getId() {

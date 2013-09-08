@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalTime;
@@ -58,6 +59,7 @@ public class PESpace {
   private LocalTime occupiedTime;
 
   @Transient
+  @JsonIgnore
   private List<Long> ruleIds;
 
   // I believe this automatically adds the joining table

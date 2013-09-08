@@ -1,16 +1,22 @@
 package com.parkingengine.controllers;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkingengine.domain.entities.PEMeter;
+import com.parkingengine.json.CustomJsonFactory;
 import com.parkingengine.service.PEMeterService;
 
 @Controller
@@ -48,4 +54,17 @@ public class PEMeterController {
     return peMeterServiceImpl.mapPEMeterToPERules(meterId, ruleId);
   }
 
+
+  @RequestMapping(value = "/PEMeter/alljsonp", produces = "application/json")
+  public @ResponseBody
+  String jsonP(HttpServletRequest request) throws JsonGenerationException,
+      JsonMappingException, IOException {
+
+    String callBackValue = request.getParameter("callback");
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    List<PEMeter> peMeters = peMeterServiceImpl.getAllPEMeter();
+    String responseString = callBackValue + "(" + objectMapper.writeValueAsString(peMeters) + ");";
+    return responseString;
+  }
 }

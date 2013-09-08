@@ -17,6 +17,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.parkingengine.json.JodaLocalTimeSerializer;
+import com.parkingengine.json.PERuleSerializer;
 
 @Entity
 @Table(name = PERule.TABLE_NAME)
