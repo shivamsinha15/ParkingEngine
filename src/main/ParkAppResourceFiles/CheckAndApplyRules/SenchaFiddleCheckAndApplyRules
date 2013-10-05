@@ -1,0 +1,195 @@
+Ext.application({
+    name : ('SF' || 'SenchaFiddle'),
+    
+    launch : function() {
+        //Setup
+        var peRule1 = Ext.create('MyApp.model.PERule', {id:"1",fromDay:"Monday",toDay:"Friday",
+    					cost:"4",fromTime:"07:00",toTime:"09:30",timeLimit:"2"});//EOCreate
+        
+        var peRule2 = Ext.create('MyApp.model.PERule', {id:"2",fromDay:"Monday",toDay:"Friday",
+    					cost:"1",fromTime:"09:30",toTime:"12:00",timeLimit:"2"});//EOCreate
+        
+        var peRule3 = Ext.create('MyApp.model.PERule', {id:"3",fromDay:"Monday",toDay:"Friday",
+    					cost:"5",fromTime:"12:00",toTime:"18:30",timeLimit:"2"});//EOCreate
+        
+        var peRule4 = Ext.create('MyApp.model.PERule', {id:"4",fromDay:"Monday",toDay:"Friday",
+    					cost:"5",fromTime:"18:30",toTime:"21:30",timeLimit:"2"});//EOCreate
+        
+        var peSpaceReport = Ext.create('Report', new Date());   
+        peSpaceReport.set('startHour','06');
+        peSpaceReport.set('startMinute','00');
+        peSpaceReport.set('minEndHour','10');
+        peSpaceReport.set('minEndMinute','30');
+        
+        var peRules = [];
+        peRules.push(peRule1);
+        peRules.push(peRule2);
+        peRules.push(peRule3);
+        peRules.push(peRule4);
+        
+        for (var i = 0; i < peRules.length; i++) {
+   			 checkAndApplyRule(peRules[i], peSpaceReport);
+		}
+        
+
+    			} //EOLAUNCH
+});
+
+Ext.define('MyApp.model.PERule', {
+    extend: 'Ext.data.Model',
+    config: {
+        fields: [
+            {name: 'id'},
+            {name: 'fromDay'},
+            {name: 'toDay'},
+            {name: 'cost'},
+            {name: 'fromTime'},
+            {name: 'toTime'},
+            {name: 'timeLimit'}
+        ]
+    },
+
+    //Rule is applicable 
+    canBeAppliedCurrently: function(reportObject) {
+        var result = false;
+        var peRuleStartTime = parseTime(this.get('fromTime'));
+        var peRuleEndTime = parseTime(this.get('toTime'));  
+        var reportStartTime = reportObject.getStartTime();
+        var validTimes = (peRuleStartTime && peRuleEndTime && reportStartTime);
+        if(validTimes){
+        	if((reportStartTime >= peRuleStartTime) && (reportStartTime < peRuleEndTime)){
+            	alert('PE Rule can be applied');
+         		return true;   
+        	}
+        }    
+          return result;
+    },
+
+    canBeAppliedInTheFuture: function(reportObject) {
+        var result = false;
+        var peRuleStartTime = parseTime(this.get('fromTime'));
+        //var peRuleEndTime = parseTime(this.get('toTime'));
+        var reportStartTime = reportObject.getStartTime();
+        var reportMinEndTime = reportObject.getMinEndTime();
+        var validTimes = (peRuleStartTime && reportStartTime && reportMinEndTime);
+        if(validTimes){
+        	if((peRuleStartTime>reportStartTime) && (reportMinEndTime>peRuleStartTime)){
+            	alert('PE Rule can be applied in the Future');
+         		return true;   
+        	}
+        }
+        return result;
+    }
+
+});
+
+Ext.Loader.setConfig({
+    enabled : true
+});
+
+Ext.define('Report', {
+       extend: 'Ext.data.Model', 
+       fields: [
+        {name: 'startHour', type: 'string'},
+        {name: 'startMinute', type: 'string'},
+        {name: 'dayOfWeek', type: 'int'},
+        {name: 'minEndHour', type: 'string'},
+        {name: 'minEndMinute', type: 'string'},
+        {name: 'maxEndHour', type: 'string'},
+        {name: 'maxEndMinute', type: 'string'},
+        {name: 'totalCost', type: 'int', defaultValue: 0},
+        {name: 'totalTime', type: 'int', defaultValue: 0}
+    ],
+
+    constructor: function(startTime) {
+        this.callParent();
+         if (startTime) {
+             this.set('startHour', startTime.getHours());
+             this.set('startMinute', startTime.getMinutes());
+             this.set('dayOfWeek', startTime.getDay());
+         }
+         return this;
+    }, 
+
+    addToTotalCost: function(incrementTotalCost) {
+         var totalCostDTO = this.get('totalCost') + incrementTotalCost;
+         this.set('totalCost', totalCostDTO);    
+     },
+    
+    getStartTime: function(){
+        return this.convertToDateTime(this.get('startHour')+ ":"+this.get('startMinute'));
+    },
+    
+    getMinEndTime: function(){
+        return this.convertToDateTime(this.get('minEndHour')+ ":"+this.get('minEndMinute'));
+    },
+    
+    convertToDateTime: function(timeString) {
+  		var timeRegex = /(\d\d?):(\d\d)/;
+  		var today = new Date();  
+  		var match = timeRegex.exec(timeString);
+  		if(!match) return null;
+  		var hours = match[1]-0; 
+  		var minutes =  match[2]-0;
+  		return new Date(today.getFullYear(), today.getMonth(),today.getDay(),hours,minutes); 
+	}
+    
+    
+    
+});
+
+function checkAndApplyRule(peRule,peSpaceReport){
+    
+   var totalRuleTimeInHours;
+   var totalRuleCost;
+          
+  if(peRule.canBeAppliedCurrently(peSpaceReport)){
+            var endTime = peSpaceReport.getMinEndTime();
+            if(peSpaceReport.getMinEndTime()>parseTime(peRule.get('toTime'))){
+                endTime = parseTime(peRule.get('toTime'));
+            }
+            var startTime = peSpaceReport.getStartTime();
+            if(peSpaceReport.getStartTime()<parseTime(peRule.get('fromTime'))){
+                startTime = parseTime(peRule.get('fromTime'));
+            }
+            
+             totalRuleTimeInHours = (endTime - startTime)/1000/60/60;
+             totalRuleCost = totalRuleTimeInHours * peRule.get('cost');
+             alert('totalRuleTimeInHours: ' + totalRuleTimeInHours);
+             alert('totalRuleCost: ' + totalRuleCost);
+            
+        } else if(peRule.canBeAppliedInTheFuture(peSpaceReport)){
+            
+            var endTime = peSpaceReport.getMinEndTime();
+            if(peSpaceReport.getMinEndTime()>parseTime(peRule.get('toTime'))){
+                endTime = parseTime(peRule.get('toTime'));
+            }
+            
+            var startTime = parseTime(peRule.get('fromTime'));
+            totalRuleTimeInHours = (endTime - startTime)/1000/60/60;
+            totalRuleCost = totalRuleTimeInHours * peRule.get('cost');
+            alert('totalRuleTimeInHours: ' + totalRuleTimeInHours);
+            alert('totalRuleCost: ' + totalRuleCost);
+            
+            
+        }//END OF ELSE IF   
+    
+}
+
+//Util Method:
+function parseTime(timeString)
+{
+  var timeRegex = /(\d\d?):(\d\d)/;
+  var today = new Date();  
+  var match = timeRegex.exec(timeString);
+  if(!match) return null;
+  var hours = match[1]-0; 
+  var minutes =  match[2]-0;
+  return new Date(today.getFullYear(), today.getMonth(),today.getDay(),hours,minutes); 
+  /*  
+  return {
+    hours: match[1]-0, // Subtracting zero converts to a number
+    minutes: match[2]-0,
+  };
+*/
+}
