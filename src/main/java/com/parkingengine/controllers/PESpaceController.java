@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.parkingengine.domain.entities.PEMeter;
 import com.parkingengine.domain.entities.PESpace;
 import com.parkingengine.service.PEMeterService;
 import com.parkingengine.service.PESpaceService;
@@ -59,7 +58,7 @@ public class PESpaceController {
   List<PESpace> getAllPESpaces() {
     List<PESpace> peSpaces = peSpaceServiceImpl.getAllPESpaces();
     for (PESpace peSpace : peSpaces) {
-      peSpace.setRuleIds(peSpaceServiceImpl.getRuleIds(peSpace.getId()).toString());
+      peSpace.setRuleIds(peSpaceServiceImpl.getRuleIds(peSpace.getId()));
     }
     return peSpaces;
   }
@@ -73,6 +72,9 @@ public class PESpaceController {
     ObjectMapper objectMapper = new ObjectMapper();
 
     List<PESpace> peSpaces = peSpaceServiceImpl.getAllPESpaces();
+    for (PESpace peSpace : peSpaces) {
+      peSpace.setRuleIds(peSpaceServiceImpl.getRuleIds(peSpace.getId()));
+    }
     String responseString = callBackValue + "(" + objectMapper.writeValueAsString(peSpaces) + ");";
     return responseString;
   }
