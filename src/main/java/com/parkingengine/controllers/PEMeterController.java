@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkingengine.domain.entities.PEMeter;
-import com.parkingengine.json.CustomJsonFactory;
 import com.parkingengine.service.PEMeterService;
 
 @Controller
@@ -57,8 +56,8 @@ public class PEMeterController {
 
   @RequestMapping(value = "/PEMeter/alljsonp", produces = "application/json")
   public @ResponseBody
-  String jsonP(HttpServletRequest request) throws JsonGenerationException,
-      JsonMappingException, IOException {
+  String jsonP(HttpServletRequest request) throws JsonGenerationException, JsonMappingException,
+      IOException {
 
     String callBackValue = request.getParameter("callback");
     ObjectMapper objectMapper = new ObjectMapper();

@@ -59,8 +59,9 @@ public class PESpace {
   private LocalTime occupiedTime;
 
   @Transient
-  @JsonIgnore
-  private List<Long> ruleIds;
+  //@JsonIgnore
+  @Type(type = "org.hibernate.type.StringType")
+  private String ruleIds;
 
   // I believe this automatically adds the joining table
   /*-
@@ -150,11 +151,11 @@ public class PESpace {
     this.occupiedTime = occupiedTime;
   }
 
-  public List<Long> getRuleIds() {
+  public String getRuleIds() {
     return ruleIds;
   }
 
-  public void setRuleIds(List<Long> ruleIds) {
+  public void setRuleIds(String ruleIds) {
     this.ruleIds = ruleIds;
   }
 

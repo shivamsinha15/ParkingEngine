@@ -59,7 +59,7 @@ public class PESpaceController {
   List<PESpace> getAllPESpaces() {
     List<PESpace> peSpaces = peSpaceServiceImpl.getAllPESpaces();
     for (PESpace peSpace : peSpaces) {
-      peSpace.setRuleIds(peSpaceServiceImpl.getRuleIds(peSpace.getId()));
+      peSpace.setRuleIds(peSpaceServiceImpl.getRuleIds(peSpace.getId()).toString());
     }
     return peSpaces;
   }
