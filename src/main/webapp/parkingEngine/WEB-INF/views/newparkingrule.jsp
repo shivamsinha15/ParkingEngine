@@ -23,7 +23,7 @@
                 showSeconds: false,
                 showMeridian: false,
                 defaultTime: false
-            });text
+            });
              $('#timepickerLimit').timepicker({
                 minuteStep: 1,
                 template: 'dropdown',
@@ -40,7 +40,8 @@
                            "&cost="+$("#cost").val()+
                            "&fromTime="+$("#timepickerFrom").val()+
                            "&toTime="+$("#timepickerTo").val()+
-                           "&timeLimit="+$("#timepickerLimit").val();
+                           "&timeLimit="+$("#timepickerLimit").val()+
+                           "&parkSpaceType="+$("#parkSpaceType").val();
             return saveString;          
         }
     </script>
@@ -96,7 +97,8 @@
                     </select>  
                 </div>
         </div> 
-  <!----  CONTROL GROUP Two END   -->       
+  <!----  CONTROL GROUP Two END   --> 
+      
     </form>
 </div>
 <!--- ********************* COLUMN TWO ********************* -->
@@ -141,15 +143,31 @@
         </div>
 <!----  CONTROL GROUP ONE END   --->
 <!--- CONTROL GROUP Two  -->    
-  
-        <div class="control-group">
+        <div class="control-group"> 
             <label class="control-label" for="timepickerLimit">Max Time Limit:</label>
+             <div class="controls">
                 <div class="input-append bootstrap-timepicker">
                          <input id="timepickerLimit" type="text" class="input-small">
                         <span class="add-on"><i class="icon-time"></i></span>
                 </div>
+             </div>
         </div> 
-  <!----  CONTROL GROUP Two END   -->       
+<!----  CONTROL GROUP Two END   -->
+<!--- CONTROL GROUP Three  -->    
+  
+        <div class="control-group">
+            <label class="control-label" for="parkSpaceType">ParkSpace Type:</label>
+                <div class="controls">
+                    <select id="parkSpaceType">
+                        <option>Normal</option>
+                        <option>LoadingZone</option>
+                        <option>Disabled</option>
+                        <option>ClearWay</option>
+                        <option>NoParking</option>
+                    </select>  
+                </div>
+        </div> 
+  <!----  CONTROL GROUP Three END   -->             
     </form>
 </div>
 <!---SAVE BUTTON START -->

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.parkingengine.domain.entities.PERule;
 import com.parkingengine.domain.entities.PERule.DaysOfTheWeek;
+import com.parkingengine.domain.entities.PERule.ParkSpaceType;
 import com.parkingengine.service.PERuleService;
 
 @Controller
@@ -34,12 +35,13 @@ public class PERuleController {
   private static final String TO_TIME = "toTime";
   private static final String TIME_LIMIT = "timeLimit";
   private static final String COST = "cost";
+  private static final String PARK_SPACE_TYPE = "parkSpaceType";
 
   /*-
   var saveDeleteAction = '<a href=\'javascript:alert(\"test\")\';class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a> <a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>'; 
   var saveDeleteAction = '<a href=\'javascript:alert(\"test\")\';class="btn btn-small btn-warning"><i class="btn-icon-only icon-ok"></i></a> <a href="javascript:;" class="btn btn-small"><i class="btn-icon-only icon-remove"></i></a>';
    * <li> 
-   *  <a id="group" class="textLink" href="<c:url value="/data/save?fromDay=foo&toDay=xxx&cost=5&fromTime=baz&toTime=baz&timeLimit=baz" />">Group ofquery parameters</a> 
+   *  <a id="group" class="textLink" href="<c:url value="/data/save?fromDay=foo&toDay=xxx&cost=5&fromTime=baz&toTime=baz&timeLimit=baz&parkSpaceType=Normal" />">Group ofquery parameters</a> 
    * </li>
    */
 
@@ -54,6 +56,7 @@ public class PERuleController {
         .setTimeLimit(LocalTime.parse(request.getParameter(TIME_LIMIT), PERule.hoursMinFormatter));
     peRule.setToDay(DaysOfTheWeek.valueOf(request.getParameter(TO_DAY)));
     peRule.setFromDay(DaysOfTheWeek.valueOf(request.getParameter(FROM_DAY)));
+    peRule.setParkSpaceType(ParkSpaceType.valueOf(request.getParameter(PARK_SPACE_TYPE)));
     return peRuleServiceImpl.save(peRule);
   }
 
@@ -65,8 +68,8 @@ public class PERuleController {
 
   @RequestMapping(value = "/PERule/alljsonp", produces = "application/json")
   public @ResponseBody
-  String jsonP(HttpServletRequest request) throws JsonGenerationException,
-      JsonMappingException, IOException {
+  String jsonP(HttpServletRequest request) throws JsonGenerationException, JsonMappingException,
+      IOException {
 
     String callBackValue = request.getParameter("callback");
     ObjectMapper objectMapper = new ObjectMapper();

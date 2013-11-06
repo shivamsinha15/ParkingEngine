@@ -17,7 +17,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.parkingengine.json.JodaLocalTimeSerializer;
-import com.parkingengine.json.PERuleSerializer;
 
 @Entity
 @Table(name = PERule.TABLE_NAME)
@@ -33,6 +32,10 @@ public class PERule {
   @Column(name = "per_from_day")
   @Enumerated(EnumType.STRING)
   private DaysOfTheWeek fromDay;
+
+  @Column(name = "per_park_space_type")
+  @Enumerated(EnumType.STRING)
+  private ParkSpaceType parkSpaceType;
 
   @Column(name = "per_to_day")
   @Enumerated(EnumType.STRING)
@@ -81,6 +84,21 @@ public class PERule {
     }
   }
 
+  public enum ParkSpaceType {
+    Normal("Normal"), Disabled("Disabled"), ClearWay("ClearWay"), NoParking("NoParking"), Loading(
+        "LoadingZone");
+
+    private String description;
+
+    private ParkSpaceType(final String description) {
+      this.description = description;
+    }
+
+    public String getString() {
+      return description;
+    }
+  }
+
   public PERule() {
 
   }
@@ -93,6 +111,15 @@ public class PERule {
     this.timeLimit = peRule.timeLimit;
     this.toDay = peRule.toDay;
     this.toTime = peRule.toTime;
+    this.parkSpaceType = peRule.parkSpaceType;
+  }
+
+  public ParkSpaceType getParkSpaceType() {
+    return parkSpaceType;
+  }
+
+  public void setParkSpaceType(ParkSpaceType parkSpaceType) {
+    this.parkSpaceType = parkSpaceType;
   }
 
   public Long getId() {
