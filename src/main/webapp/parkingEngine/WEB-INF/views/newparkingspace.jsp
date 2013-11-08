@@ -245,7 +245,7 @@
             
         </div> <!-- /span6 -->    
 
-        <div class="span7"> 
+        <div class="span8"> 
             <div class="widget stacked">
                     
                 <div class="widget-header">
@@ -263,6 +263,7 @@
                                 <th>TimeTo</th>
                                 <th>Cost</th>
                                 <th>MaxTimeLimit</th>
+                                <th>ParkSpace Type</th>
                             <th class="td-actions"> Add </th>
                             </tr>
                         </thead>

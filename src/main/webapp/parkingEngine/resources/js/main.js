@@ -490,16 +490,18 @@ $(window).load(function() {
     var cell6=row.insertCell(5);
     var cell7=row.insertCell(6);
     var cell8=row.insertCell(7);
+    var cell9=row.insertCell(8);
     var ruleTableId = ParkENG.id+result.id;
     cell1.innerHTML=result.id;
     cell1.id=ruleTableId;
     cell2.innerHTML= result.fromDay;
     cell3.innerHTML= result.toDay;
-    cell4.innerHTML= result.cost; 
-    cell5.innerHTML= result.fromTime;
-    cell6.innerHTML= result.toTime;
+    cell4.innerHTML= result.fromTime; 
+    cell5.innerHTML= result.toTime;
+    cell6.innerHTML= result.cost;
     cell7.innerHTML= result.timeLimit;
-    cell8.innerHTML= saveDeleteActionParkingRuleTable(meterId,result.id);  
+    cell8.innerHTML= result.parkSpaceType;
+    cell9.innerHTML= saveDeleteActionParkingRuleTable(meterId,result.id);  
   }
 
     function setValueForDom(dom,value){

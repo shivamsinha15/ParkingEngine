@@ -33,9 +33,6 @@ public class PERule {
   @Enumerated(EnumType.STRING)
   private DaysOfTheWeek fromDay;
 
-  @Column(name = "per_park_space_type")
-  @Enumerated(EnumType.STRING)
-  private ParkSpaceType parkSpaceType;
 
   @Column(name = "per_to_day")
   @Enumerated(EnumType.STRING)
@@ -53,6 +50,10 @@ public class PERule {
   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
   @JsonSerialize(using = JodaLocalTimeSerializer.class)
   private LocalTime toTime;
+  
+  @Column(name = "per_park_space_type")
+  @Enumerated(EnumType.STRING)
+  private ParkSpaceType parkSpaceType;
 
   /*
    * @Column(name = "per_time_limit")
@@ -85,7 +86,7 @@ public class PERule {
   }
 
   public enum ParkSpaceType {
-    Normal("Normal"), Disabled("Disabled"), ClearWay("ClearWay"), NoParking("NoParking"), Loading(
+    Normal("Normal"), Disabled("Disabled"), ClearWay("ClearWay"), NoParking("NoParking"), LoadingZone(
         "LoadingZone");
 
     private String description;
